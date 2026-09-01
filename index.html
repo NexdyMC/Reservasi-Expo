@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
+<html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,22 +9,20 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
-    darkMode: 'class',
     theme: {
       extend: {
         colors: {
           green: {
-            950: '#08281D', // hijau nyaris hitam (dark mode bg)
-            900: '#0D3B2A', // hijau tua dasar (light mode bg)
+            950: '#08281D',
+            900: '#0D3B2A', // hijau tua dasar (Group 44.jpg)
             800: '#12513A',
-            700: '#1C6B45', // hijau medium (band tengah)
-            600: '#237A4F', // aksen garis diagonal
+            700: '#1C6B45',
+            600: '#237A4F',
           },
           gold: {
             300: '#FDE68A',
-            400: '#F7CB3D', // kuning emas utama (light mode wave)
+            400: '#F7CB3D', // kuning emas utama
             500: '#E6B421',
-            700: '#A8821A', // kuning redup (dark mode wave)
           }
         },
         fontFamily: {
@@ -36,22 +34,17 @@
   }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
 
 <!-- jQuery via CDN -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-<!-- AOS (Animate On Scroll) via CDN -->
-<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
-<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
 
 <!-- SweetAlert2 via CDN -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <style>
-  /* Sedikit CSS kustom yang tidak bisa ditangani utility Tailwind langsung */
   body { font-family: 'Inter', sans-serif; }
-  h1, h2, .font-display { font-family: 'Poppins', sans-serif; }
+  .font-display { font-family: 'Poppins', sans-serif; }
 
   .wave-top, .wave-bottom {
     position: absolute;
@@ -59,13 +52,19 @@
     width: 100%;
     height: auto;
     pointer-events: none;
-    transition: opacity 0.4s ease;
   }
   .wave-top { top: 0; }
   .wave-bottom { bottom: 0; }
 
-  /* Transisi halus untuk perpindahan light/dark */
-  .theme-fade { transition: background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease; }
+  /* Pattern garis geometris tipis transparan (CSS murni) */
+  .geo-pattern {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 16px),
+      repeating-linear-gradient(-45deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 16px);
+  }
 
   /* Sembunyikan panah default select agar konsisten dengan tema */
   select.custom-select {
@@ -76,184 +75,107 @@
     background-position: right 0.9rem center;
     background-size: 1.1rem;
   }
-  .dark select.custom-select {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23E5E7EB' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+
+  /* Form bayangan & iframe tersembunyi (teknik mirror submit) */
+  .visually-hidden {
+    position: absolute !important;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
   }
 </style>
 </head>
 
-<body class="theme-fade bg-green-900 dark:bg-green-950 min-h-screen relative overflow-x-hidden font-body">
-
-  <!-- ===================== NAVBAR ===================== -->
-  <nav data-aos="fade-down" data-aos-duration="600"
-       class="fixed top-0 inset-x-0 z-40 theme-fade
-              bg-green-950/30 dark:bg-black/40 backdrop-blur-md border-b border-white/10">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 shrink-0 rounded-xl bg-gold-400 grid place-items-center shadow-md">
-          <svg class="w-5 h-5 text-green-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7l9-4 9 4-9 4-9-4zm0 0v10l9 4 9-4V7"/>
-          </svg>
-        </div>
-        <div class="leading-tight">
-          <h2 class="font-display text-sm sm:text-base font-semibold text-white theme-fade">Expo Reservation</h2>
-          <p class="text-[11px] sm:text-xs text-gold-300/90 theme-fade">Reservasi Kunjungan Expo Sekolah</p>
-        </div>
-      </div>
-
-      <!-- ===================== TOGGLE DARK / LIGHT MODE ===================== -->
-      <button id="theme-toggle"
-              aria-label="Ganti tema"
-              class="grid place-items-center w-10 h-10 rounded-full shrink-0
-                     bg-white/20 dark:bg-black/30 backdrop-blur-md border border-white/30
-                     hover:bg-white/30 dark:hover:bg-black/40 transition theme-fade">
-        <!-- Ikon Bulan (tampil di light mode -> klik untuk ke dark) -->
-        <svg id="icon-moon" class="w-5 h-5 text-green-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
-        </svg>
-        <!-- Ikon Matahari (tampil di dark mode -> klik untuk ke light) -->
-        <svg id="icon-sun" class="w-5 h-5 text-gold-300 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="4"/>
-          <path stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
-        </svg>
-      </button>
-    </div>
-  </nav>
+<body class="bg-green-900 min-h-screen relative overflow-x-hidden font-body">
 
   <!-- ===================== GELOMBANG ATAS ===================== -->
   <svg class="wave-top" viewBox="0 0 1440 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path class="fill-gold-500/70 dark:fill-gold-700/50 theme-fade"
-          d="M0,60 C240,160 420,0 720,40 C1020,80 1200,180 1440,90 L1440,0 L0,0 Z"></path>
-    <path class="fill-gold-400 dark:fill-gold-700 theme-fade"
-          d="M0,90 C220,10 480,150 740,90 C1000,30 1240,140 1440,60 L1440,0 L0,0 Z"></path>
+    <path class="fill-gold-500/70" d="M0,60 C240,160 420,0 720,40 C1020,80 1200,180 1440,90 L1440,0 L0,0 Z"></path>
+    <path class="fill-gold-400" d="M0,90 C220,10 480,150 740,90 C1000,30 1240,140 1440,60 L1440,0 L0,0 Z"></path>
   </svg>
 
   <!-- ===================== GELOMBANG BAWAH ===================== -->
   <svg class="wave-bottom" viewBox="0 0 1440 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path class="fill-gold-500/70 dark:fill-gold-700/50 theme-fade"
-          d="M0,160 C240,60 420,220 720,180 C1020,140 1200,40 1440,130 L1440,220 L0,220 Z"></path>
-    <path class="fill-gold-400 dark:fill-gold-700 theme-fade"
-          d="M0,130 C220,210 480,70 740,130 C1000,190 1240,80 1440,160 L1440,220 L0,220 Z"></path>
+    <path class="fill-gold-500/70" d="M0,160 C240,60 420,220 720,180 C1020,140 1200,40 1440,130 L1440,220 L0,220 Z"></path>
+    <path class="fill-gold-400" d="M0,130 C220,210 480,70 740,130 C1000,190 1240,80 1440,160 L1440,220 L0,220 Z"></path>
   </svg>
 
-  <!-- ===================== AKSEN GARIS DIAGONAL ===================== -->
-  <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-40 dark:opacity-20">
+  <!-- ===================== PATTERN GARIS GEOMETRIS (CSS murni) ===================== -->
+  <div class="geo-pattern"></div>
+
+  <!-- ===================== AKSEN GARIS DIAGONAL SOLID ===================== -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
     <div class="absolute w-[160%] h-24 bg-green-600 -rotate-[18deg] top-[18%] -left-1/4"></div>
     <div class="absolute w-[160%] h-3  bg-green-600/70 -rotate-[18deg] top-[27%] -left-1/4"></div>
   </div>
 
+  <!-- ===================== HEADER (statis, pojok kiri atas) ===================== -->
+  <header class="absolute top-0 left-0 z-30 p-4 sm:p-6 flex items-center gap-3">
+    <div class="w-11 h-11 rounded-xl bg-gold-400 grid place-items-center shadow-md shrink-0">
+      <svg class="w-6 h-6 text-green-950" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.73Z"/>
+        <path d="M3.3 7 12 12l8.7-5"/>
+        <path d="M12 22V12"/>
+      </svg>
+    </div>
+    <div class="leading-tight">
+      <h1 class="font-display text-base sm:text-lg font-bold text-white">Expo Reservation</h1>
+      <p class="text-xs sm:text-sm text-gray-200/80">Reservasi Kunjungan Expo Sekolah</p>
+    </div>
+  </header>
+
   <!-- ===================== KONTEN UTAMA ===================== -->
-  <main class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 pt-28 pb-20 sm:pt-32">
-
-    <!-- Wadah Logo -->
-    <div data-aos="fade-down" data-aos-delay="100" class="mb-6 bg-white rounded-2xl shadow-lg px-3 py-2 flex items-center gap-2">
-      <div class="w-11 h-11 rounded-full bg-gold-400 grid place-items-center text-[10px] font-bold text-green-950 leading-tight text-center font-display">
-        LOGO<br>1
-      </div>
-      <div class="w-11 h-11 rounded-full bg-green-700 grid place-items-center text-[10px] font-bold text-white leading-tight text-center font-display">
-        LOGO<br>2
-      </div>
-    </div>
-
-    <!-- Judul -->
-    <div data-aos="fade-up" data-aos-delay="150" class="text-center mb-8 px-2">
-      <h1 class="font-display text-2xl sm:text-3xl font-semibold text-white theme-fade">Reservasi Kunjungan Expo</h1>
-      <p class="text-gold-300 text-sm mt-1 theme-fade">Isi data di bawah untuk mengamankan tempatmu</p>
-    </div>
+  <main class="relative z-10 min-h-screen flex items-center justify-center px-4 py-28">
 
     <!-- Card Form (Glassmorphism) -->
-    <div data-aos="fade-up" data-aos-delay="220" class="w-full max-w-md rounded-3xl border theme-fade
-                bg-white/70 dark:bg-black/30
-                border-white/40 dark:border-white/10
-                backdrop-blur-xl shadow-2xl p-6 sm:p-8">
+    <div class="w-full max-w-md rounded-3xl border bg-white/70 border-white/40 backdrop-blur-xl shadow-2xl p-6 sm:p-8">
+
+      <div class="text-center mb-6">
+        <h2 class="font-display text-xl sm:text-2xl font-semibold text-green-950">Form Reservasi</h2>
+        <p class="text-green-900/60 text-sm mt-1">Isi data di bawah untuk mengamankan tempatmu</p>
+      </div>
 
       <form id="form-reservasi" class="space-y-4">
 
         <div>
-          <label for="nama" class="block text-sm font-medium text-green-950 dark:text-gold-200 mb-1 theme-fade">Nama Lengkap</label>
+          <label for="nama" class="block text-sm font-medium text-green-950 mb-1">Nama Lengkap</label>
           <input type="text" id="nama" name="nama" required placeholder="Tulis nama lengkapmu"
-                 class="w-full rounded-xl px-4 py-2.5 bg-white/80 dark:bg-white/10 border border-green-900/10 dark:border-white/10
-                        text-green-950 dark:text-white placeholder:text-green-900/40 dark:placeholder:text-white/40
-                        focus:outline-none focus:ring-2 focus:ring-gold-500 theme-fade">
+                 class="w-full rounded-xl px-4 py-2.5 bg-white/80 border border-green-900/10
+                        text-green-950 placeholder:text-green-900/40
+                        focus:outline-none focus:ring-2 focus:ring-gold-500">
         </div>
 
         <div>
-          <label for="kelas" class="block text-sm font-medium text-green-950 dark:text-gold-200 mb-1 theme-fade">Kelas</label>
-          <select id="kelas" name="kelas" required
-                  class="custom-select w-full rounded-xl px-4 py-2.5 bg-white/80 dark:bg-white/10 border border-green-900/10 dark:border-white/10
-                         text-green-950 dark:text-white focus:outline-none focus:ring-2 focus:ring-gold-500 theme-fade">
-            <option value="" disabled selected>Pilih kelas</option>
-            <optgroup label="Kelas 10">
-              <option value="10 RPL 1">10 RPL 1</option>
-              <option value="10 RPL 2">10 RPL 2</option>
-              <option value="10 RPL 3">10 RPL 3</option>
-              <option value="10 RPL 4">10 RPL 4</option>
-              <option value="10 RPL 5">10 RPL 5</option>
-              <option value="10 RPL 6">10 RPL 6</option>
-              <option value="10 RPL 7">10 RPL 7</option>
-              <option value="10 RPL 8">10 RPL 8</option>
-              <option value="10 RPL 9">10 RPL 9</option>
-              <option value="10 RPL 10">10 RPL 10</option>
-              <option value="10 RPL 11">10 RPL 11</option>
-              <option value="10 DKV 1">10 DKV 1</option>
-              <option value="10 DKV 2">10 DKV 2</option>
-              <option value="10 DKV 3">10 DKV 3</option>
-            </optgroup>
-            <optgroup label="Kelas 11">
-              <option value="11 RPL 1">11 RPL 1</option>
-              <option value="11 RPL 2">11 RPL 2</option>
-              <option value="11 RPL 3">11 RPL 3</option>
-              <option value="11 RPL 4">11 RPL 4</option>
-              <option value="11 RPL 5">11 RPL 5</option>
-              <option value="11 RPL 6">11 RPL 6</option>
-              <option value="11 RPL 7">11 RPL 7</option>
-              <option value="11 RPL 8">11 RPL 8</option>
-              <option value="11 RPL 9">11 RPL 9</option>
-              <option value="11 DKV 1">11 DKV 1</option>
-              <option value="11 DKV 2">11 DKV 2</option>
-              <option value="11 DKV 3">11 DKV 3</option>
-            </optgroup>
-            <optgroup label="Kelas 12">
-              <option value="12 RPL 1">12 RPL 1</option>
-              <option value="12 RPL 2">12 RPL 2</option>
-              <option value="12 RPL 3">12 RPL 3</option>
-              <option value="12 RPL 4">12 RPL 4</option>
-              <option value="12 RPL 5">12 RPL 5</option>
-              <option value="12 RPL 6">12 RPL 6</option>
-              <option value="12 RPL 7">12 RPL 7</option>
-              <option value="12 RPL 8">12 RPL 8</option>
-              <option value="12 RPL 9">12 RPL 9</option>
-              <option value="12 DKV 1">12 DKV 1</option>
-              <option value="12 DKV 2">12 DKV 2</option>
-              <option value="12 DKV 3">12 DKV 3</option>
-            </optgroup>
+          <label for="instansi" class="block text-sm font-medium text-green-950 mb-1">Asal Instansi / Kelas</label>
+          <input type="text" id="instansi" name="instansi" required placeholder="Contoh: SMK Negeri 1 - 12 RPL 1"
+                 class="w-full rounded-xl px-4 py-2.5 bg-white/80 border border-green-900/10
+                        text-green-950 placeholder:text-green-900/40
+                        focus:outline-none focus:ring-2 focus:ring-gold-500">
+        </div>
+
+        <div>
+          <label for="kategori" class="block text-sm font-medium text-green-950 mb-1">Kategori Tiket</label>
+          <select id="kategori" name="kategori" required
+                  class="custom-select w-full rounded-xl px-4 py-2.5 bg-white/80 border border-green-900/10
+                         text-green-950 focus:outline-none focus:ring-2 focus:ring-gold-500">
+            <option value="" disabled selected>Pilih kategori</option>
+            <option value="Pelajar">Pelajar</option>
+            <option value="Umum">Umum</option>
           </select>
         </div>
 
         <div>
-          <span class="block text-sm font-medium text-green-950 dark:text-gold-200 mb-1 theme-fade">PhotoBooth</span>
-          <p class="text-xs text-green-900/60 dark:text-white/50 mb-2 theme-fade">Apakah kamu ingin menggunakan PhotoBooth?</p>
-          <div class="grid grid-cols-2 gap-3">
-            <label class="cursor-pointer">
-              <input type="radio" name="photobooth" value="iya" required class="peer sr-only">
-              <div class="rounded-xl border-2 border-green-900/10 dark:border-white/10 bg-white/80 dark:bg-white/10
-                          px-4 py-3 text-center font-medium text-green-950 dark:text-white theme-fade
-                          peer-checked:border-gold-500 peer-checked:bg-gold-400/90 peer-checked:text-green-950
-                          peer-checked:shadow-md transition-all">
-                Iya
-              </div>
-            </label>
-            <label class="cursor-pointer">
-              <input type="radio" name="photobooth" value="tidak" required class="peer sr-only">
-              <div class="rounded-xl border-2 border-green-900/10 dark:border-white/10 bg-white/80 dark:bg-white/10
-                          px-4 py-3 text-center font-medium text-green-950 dark:text-white theme-fade
-                          peer-checked:border-gold-500 peer-checked:bg-gold-400/90 peer-checked:text-green-950
-                          peer-checked:shadow-md transition-all">
-                Tidak
-              </div>
-            </label>
-          </div>
+          <label for="photobooth" class="block text-sm font-medium text-green-950 mb-1">Akses PhotoBooth?</label>
+          <select id="photobooth" name="photobooth" required
+                  class="custom-select w-full rounded-xl px-4 py-2.5 bg-white/80 border border-green-900/10
+                         text-green-950 focus:outline-none focus:ring-2 focus:ring-gold-500">
+            <option value="" disabled selected>Pilih salah satu</option>
+            <option value="Iya">Iya</option>
+            <option value="Tidak">Tidak</option>
+          </select>
         </div>
 
         <button type="submit" id="btn-submit"
@@ -261,87 +183,96 @@
                        bg-gold-400 hover:bg-gold-500 active:scale-[0.98]
                        transition-all duration-200 shadow-lg shadow-gold-500/20
                        disabled:opacity-70 disabled:cursor-not-allowed">
-          Reservasi Sekarang
+          Kirim Reservasi
         </button>
-
-        <p id="form-note" class="text-xs text-center text-green-900/70 dark:text-white/50 pt-1 theme-fade">
-          Data akan diteruskan ke panitia expo untuk konfirmasi kehadiran.
-        </p>
       </form>
     </div>
   </main>
 
+  <!-- ===================== FORM BAYANGAN (MIRROR) + IFRAME TERSEMBUNYI ===================== -->
+  <!-- Teknik ini mengirim data ke Google Form tanpa terkena CORS, karena target-nya iframe, bukan AJAX. -->
+  <!-- PENTING: ganti action URL & nama entry.xxxxx di bawah ini dengan Form ID dan entry ID Google Form Anda sendiri
+       (ambil dari URL "formResponse" pada mode pratinjau HTML Google Form Anda). -->
+  <iframe name="hidden_iframe" id="hidden_iframe" class="visually-hidden"></iframe>
+  <form id="gformMirror"
+        action="https://docs.google.com/forms/d/e/GANTI_DENGAN_FORM_ID_ANDA/formResponse"
+        method="POST"
+        target="hidden_iframe"
+        class="visually-hidden">
+    <input type="text" name="entry.11111" id="mirror-nama">
+    <input type="text" name="entry.22222" id="mirror-instansi">
+    <input type="text" name="entry.33333" id="mirror-kategori">
+    <input type="text" name="entry.44444" id="mirror-photobooth">
+  </form>
+
   <script>
     $(function () {
 
-      // ===================== INIT AOS =====================
-      AOS.init({
-        duration: 700,
-        easing: 'ease-out-cubic',
-        once: true
-      });
-
-      // ===================== TOGGLE DARK / LIGHT MODE =====================
-      $('#theme-toggle').on('click', function () {
-        $('html').toggleClass('dark');
-        $('#icon-moon, #icon-sun').toggleClass('hidden');
-      });
-
-      // ===================== SUBMIT FORM (SIMULASI) =====================
+      // ===================== SUBMIT FORM UTAMA =====================
       $('#form-reservasi').on('submit', function (e) {
         e.preventDefault();
 
-        var $btn = $('#btn-submit');
-        var $note = $('#form-note');
-        var originalText = $btn.text();
+        var nama       = $('#nama').val().trim();
+        var instansi   = $('#instansi').val().trim();
+        var kategori   = $('#kategori').val();
+        var photobooth = $('#photobooth').val();
 
-        // Kunci tombol & tampilkan status memproses
-        $btn.prop('disabled', true).text('Memproses...');
-        $note.text('Sedang mengirim data reservasi...');
+        // Ikon ceklis kustom: lingkaran border kuning tebal + tanda ceklis kuning
+        var checkIcon =
+          '<svg width="76" height="76" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">' +
+            '<circle cx="40" cy="40" r="35" stroke="#F7CB3D" stroke-width="6"/>' +
+            '<path d="M24 41L35 52L57 29" stroke="#F7CB3D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>' +
+          '</svg>';
 
-        setTimeout(function () {
-          var nama       = $('#nama').val();
-          var kelas      = $('#kelas').val();
-          var photobooth = $('input[name="photobooth"]:checked').val();
+        // ===================== POPUP SUKSES (SweetAlert2, desain kustom) =====================
+        Swal.fire({
+          html:
+            '<div class="flex flex-col items-center px-1">' +
+              '<div class="mb-4">' + checkIcon + '</div>' +
+              '<h2 class="font-display text-xl font-bold text-green-900 mb-2">Reservasi Terkirim</h2>' +
+              '<p class="text-sm text-gray-600 leading-relaxed">' +
+                'Data atas nama <b>' + nama + '</b> (' + instansi + ') sudah tersimpan.<br>' +
+                'PhotoBooth: <b>' + photobooth + '</b>' +
+              '</p>' +
+            '</div>',
+          showCancelButton: true,
+          confirmButtonText: 'Lanjutkan ke Google Form',
+          cancelButtonText: 'Tutup',
+          reverseButtons: false,
+          buttonsStyling: false,
+          customClass: {
+            popup: 'rounded-3xl',
+            actions: 'flex flex-col sm:flex-row-reverse gap-2 w-full px-4 pb-2',
+            confirmButton: 'w-full bg-gold-400 hover:bg-gold-500 text-green-950 font-display font-semibold rounded-xl px-5 py-2.5 transition-colors',
+            cancelButton: 'w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-xl px-5 py-2.5 transition-colors'
+          }
+        }).then(function (result) {
+          if (result.isConfirmed) {
 
-          // Bangun URL Google Form ter-prefill (ketiga entry ID sudah sesuai field form ini)
-          var baseUrl = 'https://docs.google.com/forms/d/e/1FAIpQLScazZ_QXUmFgb3Yr_4LOd_gkIN1yj3gNOHpmq_AaxIIZ7zyeQ/viewform';
-          var googleFormUrl = baseUrl
-            + '?usp=pp_url'
-            + '&entry.962445220=' + encodeURIComponent(nama)
-            + '&entry.1759023125=' + encodeURIComponent(kelas)
-            + '&entry.1507860343=' + encodeURIComponent(photobooth);
+            // 1. Salin data form utama ke form bayangan (gformMirror)
+            $('#mirror-nama').val(nama);
+            $('#mirror-instansi').val(instansi);
+            $('#mirror-kategori').val(kategori);
+            $('#mirror-photobooth').val(photobooth);
 
-          $btn.prop('disabled', false).text(originalText);
-          $note.text('Data akan diteruskan ke panitia expo untuk konfirmasi kehadiran.');
+            // 2. Submit form bayangan ke iframe tersembunyi (menghindari CORS)
+            $('#gformMirror')[0].submit();
 
-          var isDark = $('html').hasClass('dark');
+            // 3. Reset form utama
+            $('#form-reservasi')[0].reset();
 
-          // ===================== POPUP SUKSES (SweetAlert2) =====================
-          Swal.fire({
-            title: 'Reservasi Terkirim',
-            html: 'Data atas nama <b>' + nama + '</b> (' + kelas + ') sudah tersimpan.'
-                + '<br>PhotoBooth: <b>' + (photobooth === 'iya' ? 'Iya' : 'Tidak') + '</b>',
-            icon: 'success',
-            iconColor: '#F7CB3D',
-            confirmButtonText: 'Lanjutkan ke Google Form',
-            confirmButtonColor: '#F7CB3D',
-            showCancelButton: true,
-            cancelButtonText: 'Tutup',
-            background: isDark ? '#08281D' : '#ffffff',
-            color: isDark ? '#ffffff' : '#08281D',
-            customClass: {
-              popup: 'rounded-3xl',
-              confirmButton: 'font-display font-semibold text-green-950 rounded-xl px-5 py-2.5',
-              cancelButton: 'font-medium rounded-xl px-5 py-2.5'
-            }
-          }).then(function (result) {
-            if (result.isConfirmed) {
-              // Buka Google Form ter-prefill di tab baru untuk penyelesaian resmi
-              window.open(googleFormUrl, '_blank');
-            }
-          });
-        }, 1200);
+            // 4. Notifikasi sukses kecil (toast)
+            Swal.fire({
+              toast: true,
+              position: 'top-end',
+              icon: 'success',
+              title: 'Data berhasil dikirim ke Google Form',
+              showConfirmButton: false,
+              timer: 2500,
+              timerProgressBar: true
+            });
+          }
+        });
       });
 
     });
