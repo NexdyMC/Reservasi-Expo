@@ -41,6 +41,13 @@
 <!-- jQuery via CDN -->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
+<!-- AOS (Animate On Scroll) via CDN -->
+<link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+<!-- SweetAlert2 via CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <style>
   /* Sedikit CSS kustom yang tidak bisa ditangani utility Tailwind langsung */
   body { font-family: 'Inter', sans-serif; }
@@ -77,6 +84,43 @@
 
 <body class="theme-fade bg-green-900 dark:bg-green-950 min-h-screen relative overflow-x-hidden font-body">
 
+  <!-- ===================== NAVBAR ===================== -->
+  <nav data-aos="fade-down" data-aos-duration="600"
+       class="fixed top-0 inset-x-0 z-40 theme-fade
+              bg-green-950/30 dark:bg-black/40 backdrop-blur-md border-b border-white/10">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 shrink-0 rounded-xl bg-gold-400 grid place-items-center shadow-md">
+          <svg class="w-5 h-5 text-green-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 7l9-4 9 4-9 4-9-4zm0 0v10l9 4 9-4V7"/>
+          </svg>
+        </div>
+        <div class="leading-tight">
+          <h2 class="font-display text-sm sm:text-base font-semibold text-white theme-fade">Expo Reservation</h2>
+          <p class="text-[11px] sm:text-xs text-gold-300/90 theme-fade">Reservasi Kunjungan Expo Sekolah</p>
+        </div>
+      </div>
+
+      <!-- ===================== TOGGLE DARK / LIGHT MODE ===================== -->
+      <button id="theme-toggle"
+              aria-label="Ganti tema"
+              class="grid place-items-center w-10 h-10 rounded-full shrink-0
+                     bg-white/20 dark:bg-black/30 backdrop-blur-md border border-white/30
+                     hover:bg-white/30 dark:hover:bg-black/40 transition theme-fade">
+        <!-- Ikon Bulan (tampil di light mode -> klik untuk ke dark) -->
+        <svg id="icon-moon" class="w-5 h-5 text-green-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+        </svg>
+        <!-- Ikon Matahari (tampil di dark mode -> klik untuk ke light) -->
+        <svg id="icon-sun" class="w-5 h-5 text-gold-300 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="4"/>
+          <path stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
   <!-- ===================== GELOMBANG ATAS ===================== -->
   <svg class="wave-top" viewBox="0 0 1440 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
     <path class="fill-gold-500/70 dark:fill-gold-700/50 theme-fade"
@@ -99,28 +143,11 @@
     <div class="absolute w-[160%] h-3  bg-green-600/70 -rotate-[18deg] top-[27%] -left-1/4"></div>
   </div>
 
-  <!-- ===================== TOGGLE DARK / LIGHT MODE ===================== -->
-  <button id="theme-toggle"
-          aria-label="Ganti tema"
-          class="fixed top-5 right-5 z-30 grid place-items-center w-11 h-11 rounded-full
-                 bg-white/20 dark:bg-black/30 backdrop-blur-md border border-white/30
-                 hover:bg-white/30 dark:hover:bg-black/40 transition theme-fade">
-    <!-- Ikon Bulan (tampil di light mode -> klik untuk ke dark) -->
-    <svg id="icon-moon" class="w-5 h-5 text-green-950" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
-    </svg>
-    <!-- Ikon Matahari (tampil di dark mode -> klik untuk ke light) -->
-    <svg id="icon-sun" class="w-5 h-5 text-gold-300 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-      <circle cx="12" cy="12" r="4"/>
-      <path stroke-linecap="round" d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
-    </svg>
-  </button>
-
   <!-- ===================== KONTEN UTAMA ===================== -->
-  <main class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 py-32">
+  <main class="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 pt-28 pb-20 sm:pt-32">
 
     <!-- Wadah Logo -->
-    <div class="mb-6 bg-white rounded-2xl shadow-lg px-3 py-2 flex items-center gap-2">
+    <div data-aos="fade-down" data-aos-delay="100" class="mb-6 bg-white rounded-2xl shadow-lg px-3 py-2 flex items-center gap-2">
       <div class="w-11 h-11 rounded-full bg-gold-400 grid place-items-center text-[10px] font-bold text-green-950 leading-tight text-center font-display">
         LOGO<br>1
       </div>
@@ -130,13 +157,13 @@
     </div>
 
     <!-- Judul -->
-    <div class="text-center mb-8 px-2">
+    <div data-aos="fade-up" data-aos-delay="150" class="text-center mb-8 px-2">
       <h1 class="font-display text-2xl sm:text-3xl font-semibold text-white theme-fade">Reservasi Kunjungan Expo</h1>
       <p class="text-gold-300 text-sm mt-1 theme-fade">Isi data di bawah untuk mengamankan tempatmu</p>
     </div>
 
     <!-- Card Form (Glassmorphism) -->
-    <div class="w-full max-w-md rounded-3xl border theme-fade
+    <div data-aos="fade-up" data-aos-delay="220" class="w-full max-w-md rounded-3xl border theme-fade
                 bg-white/70 dark:bg-black/30
                 border-white/40 dark:border-white/10
                 backdrop-blur-xl shadow-2xl p-6 sm:p-8">
@@ -247,6 +274,13 @@
   <script>
     $(function () {
 
+      // ===================== INIT AOS =====================
+      AOS.init({
+        duration: 700,
+        easing: 'ease-out-cubic',
+        once: true
+      });
+
       // ===================== TOGGLE DARK / LIGHT MODE =====================
       $('#theme-toggle').on('click', function () {
         $('html').toggleClass('dark');
@@ -278,13 +312,35 @@
             + '&entry.1759023125=' + encodeURIComponent(kelas)
             + '&entry.1507860343=' + encodeURIComponent(photobooth);
 
-          alert('Reservasi atas nama "' + nama + '" berhasil diajukan! Anda akan diarahkan untuk menyelesaikan pendaftaran resmi di Google Form.');
-
           $btn.prop('disabled', false).text(originalText);
           $note.text('Data akan diteruskan ke panitia expo untuk konfirmasi kehadiran.');
 
-          // Buka Google Form ter-prefill di tab baru untuk penyelesaian resmi
-          window.open(googleFormUrl, '_blank');
+          var isDark = $('html').hasClass('dark');
+
+          // ===================== POPUP SUKSES (SweetAlert2) =====================
+          Swal.fire({
+            title: 'Reservasi Terkirim',
+            html: 'Data atas nama <b>' + nama + '</b> (' + kelas + ') sudah tersimpan.'
+                + '<br>PhotoBooth: <b>' + (photobooth === 'iya' ? 'Iya' : 'Tidak') + '</b>',
+            icon: 'success',
+            iconColor: '#F7CB3D',
+            confirmButtonText: 'Lanjutkan ke Google Form',
+            confirmButtonColor: '#F7CB3D',
+            showCancelButton: true,
+            cancelButtonText: 'Tutup',
+            background: isDark ? '#08281D' : '#ffffff',
+            color: isDark ? '#ffffff' : '#08281D',
+            customClass: {
+              popup: 'rounded-3xl',
+              confirmButton: 'font-display font-semibold text-green-950 rounded-xl px-5 py-2.5',
+              cancelButton: 'font-medium rounded-xl px-5 py-2.5'
+            }
+          }).then(function (result) {
+            if (result.isConfirmed) {
+              // Buka Google Form ter-prefill di tab baru untuk penyelesaian resmi
+              window.open(googleFormUrl, '_blank');
+            }
+          });
         }, 1200);
       });
 
