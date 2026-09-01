@@ -1,160 +1,151 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reservasi Expo | Form Pendaftaran</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-control" content="no-cache, no-store, must-revalidate">
+  <title>Reservasi Expo</title>
 
-<!-- Tailwind CSS via CDN -->
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          green: {
-            950: '#08281D',
-            900: '#0D3B2A', // hijau tua dasar (Group 44.jpg)
-            800: '#12513A',
-            700: '#1C6B45',
-            600: '#237A4F',
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Poppins"', 'sans-serif'],
+            body: ['"Inter"', 'sans-serif'],
           },
-          gold: {
-            300: '#FDE68A',
-            400: '#F7CB3D', // kuning emas utama
-            500: '#E6B421',
-          }
+          colors: {
+            forest: {
+              950: '#04241a', 900: '#0a3b2b', 800: '#0d4a35', 700: '#116043',
+              600: '#157a54', 500: '#1a9668', 400: '#2fb17f',
+            },
+            gold: {
+              300: '#fde68a', 400: '#fbd94a', 500: '#f4c410', 600: '#d9a608',
+            },
+          },
+          keyframes: {
+            drift: {
+              '0%, 100%': { transform: 'translate(0,0)' },
+              '50%': { transform: 'translate(8px,-10px)' },
+            },
+          },
+          animation: {
+            drift: 'drift 8s ease-in-out infinite',
+          },
         },
-        fontFamily: {
-          display: ['"Poppins"', 'sans-serif'],
-          body: ['"Inter"', 'sans-serif'],
-        }
-      }
+      },
+    };
+  </script>
+
+  <!-- AOS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .font-display { font-family: 'Poppins', sans-serif; }
+
+    body {
+      background-color: #04241a;
+      background-image:
+        radial-gradient(circle at 12% 8%, rgba(251, 217, 74, 0.10), transparent 40%),
+        radial-gradient(circle at 88% 92%, rgba(251, 217, 74, 0.08), transparent 45%);
     }
-  }
-</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
 
-<!-- jQuery via CDN -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    input, select {
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(251, 217, 74, 0.25);
+      color: #f3fbf6;
+    }
+    input::placeholder { color: rgba(243, 251, 246, 0.4); }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #fbd94a;
+      box-shadow: 0 0 0 3px rgba(251, 217, 74, 0.22);
+    }
+    select option { background-color: #0a3b2b; color: #f3fbf6; }
 
-<!-- SweetAlert2 via CDN -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    ::selection { background: #f4c410; color: #04241a; }
 
-<style>
-  body { font-family: 'Inter', sans-serif; }
-  .font-display { font-family: 'Poppins', sans-serif; }
-
-  .wave-top, .wave-bottom {
-    position: absolute;
-    left: 0; right: 0;
-    width: 100%;
-    height: auto;
-    pointer-events: none;
-  }
-  .wave-top { top: 0; }
-  .wave-bottom { bottom: 0; }
-
-  /* Pattern garis geometris tipis transparan (CSS murni) */
-  .geo-pattern {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image:
-      repeating-linear-gradient(45deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 1px, transparent 16px),
-      repeating-linear-gradient(-45deg, rgba(255,255,255,0.035) 0px, rgba(255,255,255,0.035) 1px, transparent 1px, transparent 16px);
-  }
-
-  /* Sembunyikan panah default select agar konsisten dengan tema */
-  select.custom-select {
-    -webkit-appearance: none;
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23444444' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 0.9rem center;
-    background-size: 1.1rem;
-  }
-
-  /* Form bayangan & iframe tersembunyi (teknik mirror submit) */
-  .visually-hidden {
-    position: absolute !important;
-    width: 1px; height: 1px;
-    padding: 0; margin: -1px;
-    overflow: hidden;
-    clip: rect(0,0,0,0);
-    white-space: nowrap;
-    border: 0;
-  }
-</style>
+    .field-error { border-color: #f87171 !important; box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.2) !important; }
+  </style>
 </head>
 
-<body class="bg-green-900 min-h-screen relative overflow-x-hidden font-body">
+<body class="min-h-screen antialiased text-emerald-50">
 
-  <!-- ===================== GELOMBANG ATAS ===================== -->
-  <svg class="wave-top" viewBox="0 0 1440 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path class="fill-gold-500/70" d="M0,60 C240,160 420,0 720,40 C1020,80 1200,180 1440,90 L1440,0 L0,0 Z"></path>
-    <path class="fill-gold-400" d="M0,90 C220,10 480,150 740,90 C1000,30 1240,140 1440,60 L1440,0 L0,0 Z"></path>
-  </svg>
-
-  <!-- ===================== GELOMBANG BAWAH ===================== -->
-  <svg class="wave-bottom" viewBox="0 0 1440 220" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <path class="fill-gold-500/70" d="M0,160 C240,60 420,220 720,180 C1020,140 1200,40 1440,130 L1440,220 L0,220 Z"></path>
-    <path class="fill-gold-400" d="M0,130 C220,210 480,70 740,130 C1000,190 1240,80 1440,160 L1440,220 L0,220 Z"></path>
-  </svg>
-
-  <!-- ===================== PATTERN GARIS GEOMETRIS (CSS murni) ===================== -->
-  <div class="geo-pattern"></div>
-
-  <!-- ===================== AKSEN GARIS DIAGONAL SOLID ===================== -->
-  <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
-    <div class="absolute w-[160%] h-24 bg-green-600 -rotate-[18deg] top-[18%] -left-1/4"></div>
-    <div class="absolute w-[160%] h-3  bg-green-600/70 -rotate-[18deg] top-[27%] -left-1/4"></div>
+  <!-- Top wave decoration -->
+  <div class="overflow-hidden fixed inset-x-0 top-0 h-40 pointer-events-none -z-10 opacity-70">
+    <svg viewBox="0 0 1440 200" class="w-full h-full" preserveAspectRatio="none">
+      <path d="M0,80 C240,160 480,0 720,60 C960,120 1200,40 1440,90 L1440,0 L0,0 Z" fill="#fbd94a" opacity="0.12"></path>
+    </svg>
   </div>
 
-  <!-- ===================== HEADER (statis, pojok kiri atas) ===================== -->
-  <header class="absolute top-0 left-0 z-30 p-4 sm:p-6 flex items-center gap-3">
-    <div class="w-11 h-11 rounded-xl bg-gold-400 grid place-items-center shadow-md shrink-0">
-      <svg class="w-6 h-6 text-green-950" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4a2 2 0 0 0 1-1.73Z"/>
-        <path d="M3.3 7 12 12l8.7-5"/>
-        <path d="M12 22V12"/>
-      </svg>
+  <!-- Navbar -->
+  <nav class="sticky top-0 z-40 border-b backdrop-blur-md bg-forest-950/90" style="border-color: rgba(251,217,74,0.15)">
+    <div class="flex gap-3 items-center px-4 py-4 mx-auto max-w-3xl">
+      <div class="flex justify-center items-center w-11 h-11 rounded-xl shadow-md bg-gradient-to-br from-gold-400 to-gold-600">
+        <i class="text-lg fa-solid fa-store text-forest-950"></i>
+      </div>
+      <div>
+        <h1 class="text-lg font-bold tracking-wide font-display text-emerald-50">Reservasi Expo</h1>
+        <p class="text-xs text-emerald-200/60">Form pendaftaran booth &amp; kunjungan</p>
+      </div>
     </div>
-    <div class="leading-tight">
-      <h1 class="font-display text-base sm:text-lg font-bold text-white">Expo Reservation</h1>
-      <p class="text-xs sm:text-sm text-gray-200/80">Reservasi Kunjungan Expo Sekolah</p>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="relative px-4 py-10 mx-auto max-w-2xl">
+    <div class="mb-6 text-center" data-aos="fade-up">
+      <span class="inline-flex gap-2 items-center text-[11px] tracking-[0.25em] uppercase text-gold-300 mb-3">
+        <i class="fa-solid fa-ticket"></i> Reservasi Kunjungan
+      </span>
+      <h2 class="text-2xl font-bold sm:text-3xl font-display text-emerald-50">Daftar Reservasi Expo</h2>
+      <p class="mt-1 text-sm text-emerald-200/70">Isi data di bawah untuk mengamankan tempatmu di acara Expo.</p>
     </div>
-  </header>
 
-  <!-- ===================== KONTEN UTAMA ===================== -->
-  <main class="relative z-10 min-h-screen flex items-center justify-center px-4 py-28">
-
-    <!-- Card Form (Glassmorphism) -->
-    <div class="w-full max-w-md rounded-3xl border bg-white/70 border-white/40 backdrop-blur-xl shadow-2xl p-6 sm:p-8">
-
-      <div class="text-center mb-6">
-        <h2 class="font-display text-xl sm:text-2xl font-semibold text-green-950">Form Reservasi</h2>
-        <p class="text-green-900/60 text-sm mt-1">Isi data di bawah untuk mengamankan tempatmu</p>
+    <div class="overflow-hidden rounded-2xl border shadow-2xl bg-forest-900/80 shadow-black/30"
+         style="border-color: rgba(251,217,74,0.18)" data-aos="fade-up" data-aos-delay="80">
+      <div class="flex gap-2 items-center px-6 py-4 border-b bg-forest-950/60" style="border-color: rgba(251,217,74,0.15)">
+        <i class="fa-solid fa-clipboard-list text-gold-400"></i>
+        <div>
+          <h2 class="text-lg font-bold font-display text-gold-400">Form Reservasi</h2>
+          <p class="text-sm text-emerald-200/60">Pastikan data yang kamu masukkan sudah benar.</p>
+        </div>
       </div>
 
-      <form id="form-reservasi" class="space-y-4">
+      <form id="reservasiForm" novalidate class="p-6 space-y-6">
 
-        <div>
-          <label for="nama" class="block text-sm font-medium text-green-950 mb-1">Nama Lengkap</label>
-          <input type="text" id="nama" name="nama" required placeholder="Contoh: Febri Pratama"
-                 class="w-full rounded-xl px-4 py-2.5 bg-white/80 border border-green-900/10
-                        text-green-950 placeholder:text-green-900/40
-                        focus:outline-none focus:ring-2 focus:ring-gold-500">
+        <!-- Nama Siswa -->
+        <div data-aos="fade-up" data-aos-delay="100">
+          <label class="flex gap-2 items-center mb-2 text-sm font-semibold text-emerald-50">
+            <i class="text-xs fa-solid fa-id-card text-gold-400"></i> Nama Siswa
+          </label>
+          <div class="relative">
+            <i class="absolute left-4 top-1/2 -translate-y-1/2 fa-solid fa-user text-emerald-200/40 pointer-events-none"></i>
+            <input type="text" id="nama" name="entry.1491829252" placeholder="Contoh: Febri Pratama"
+              class="py-3 pr-4 pl-11 w-full rounded-lg transition-all">
+          </div>
+          <p class="mt-1.5 text-xs text-red-400 hidden err-msg">Nama siswa wajib diisi.</p>
         </div>
 
-        <div>
-          <label for="kelas" class="block text-sm font-medium text-green-950 mb-1">Kelas</label>
-          <select id="kelas" name="kelas" required
-                  class="custom-select w-full rounded-xl px-4 py-2.5 bg-white/80 border border-green-900/10
-                         text-green-950 focus:outline-none focus:ring-2 focus:ring-gold-500">
-            <option value="" disabled selected>Pilih kelas</option>
-            <optgroup label="Kelas 10">
+        <!-- Kelas -->
+        <div data-aos="fade-up" data-aos-delay="150">
+          <label class="flex gap-2 items-center mb-2 text-sm font-semibold text-emerald-50">
+            <i class="text-xs fa-solid fa-school text-gold-400"></i> Kelas
+          </label>
+          <div class="relative">
+            <i class="absolute left-4 top-1/2 -translate-y-1/2 fa-solid fa-graduation-cap text-emerald-200/40 pointer-events-none"></i>
+            <i class="absolute right-4 top-1/2 -translate-y-1/2 text-xs fa-solid fa-chevron-down text-emerald-200/40 pointer-events-none"></i>
+          <select id="kelas" name="entry.1624798674" class="py-3 pr-10 pl-11 w-full rounded-lg appearance-none transition-all">
+            <option value="" disabled selected>Pilih Kelas</option>
+            <optgroup label="Kelas 10 RPL">
               <option value="10 RPL 1">10 RPL 1</option>
               <option value="10 RPL 2">10 RPL 2</option>
               <option value="10 RPL 3">10 RPL 3</option>
@@ -166,11 +157,13 @@
               <option value="10 RPL 9">10 RPL 9</option>
               <option value="10 RPL 10">10 RPL 10</option>
               <option value="10 RPL 11">10 RPL 11</option>
+            </optgroup>
+            <optgroup label="Kelas 10 DKV">
               <option value="10 DKV 1">10 DKV 1</option>
               <option value="10 DKV 2">10 DKV 2</option>
               <option value="10 DKV 3">10 DKV 3</option>
             </optgroup>
-            <optgroup label="Kelas 11">
+            <optgroup label="Kelas 11 RPL">
               <option value="11 RPL 1">11 RPL 1</option>
               <option value="11 RPL 2">11 RPL 2</option>
               <option value="11 RPL 3">11 RPL 3</option>
@@ -180,11 +173,13 @@
               <option value="11 RPL 7">11 RPL 7</option>
               <option value="11 RPL 8">11 RPL 8</option>
               <option value="11 RPL 9">11 RPL 9</option>
+            </optgroup>
+            <optgroup label="Kelas 11 DKV">
               <option value="11 DKV 1">11 DKV 1</option>
               <option value="11 DKV 2">11 DKV 2</option>
               <option value="11 DKV 3">11 DKV 3</option>
             </optgroup>
-            <optgroup label="Kelas 12">
+            <optgroup label="Kelas 12 RPL">
               <option value="12 RPL 1">12 RPL 1</option>
               <option value="12 RPL 2">12 RPL 2</option>
               <option value="12 RPL 3">12 RPL 3</option>
@@ -194,134 +189,187 @@
               <option value="12 RPL 7">12 RPL 7</option>
               <option value="12 RPL 8">12 RPL 8</option>
               <option value="12 RPL 9">12 RPL 9</option>
+            </optgroup>
+            <optgroup label="Kelas 12 DKV">
               <option value="12 DKV 1">12 DKV 1</option>
               <option value="12 DKV 2">12 DKV 2</option>
               <option value="12 DKV 3">12 DKV 3</option>
             </optgroup>
           </select>
+          </div>
+          <p class="mt-1.5 text-xs text-red-400 hidden err-msg">Kelas wajib dipilih.</p>
         </div>
 
-        <div>
-          <span class="block text-sm font-medium text-green-950 mb-1">Akses PhotoBooth?</span>
-          <p class="text-xs text-green-900/60 mb-2">Pilih salah satu di bawah ini</p>
-          <div class="grid grid-cols-2 gap-3">
-            <label class="cursor-pointer">
-              <input type="radio" name="photobooth" value="Iya" required class="peer sr-only">
-              <div class="rounded-xl border-2 border-green-900/15 bg-white/80
-                          px-4 py-3 text-center font-medium text-green-950
-                          peer-checked:border-gold-500 peer-checked:bg-gold-400/90
-                          peer-checked:shadow-md transition-all">
-                Iya
+        <!-- Akses PhotoBooth -->
+        <div data-aos="fade-up" data-aos-delay="200">
+          <label class="flex gap-2 items-center mb-2 text-sm font-semibold text-emerald-50">
+            <i class="text-xs fa-solid fa-camera-retro text-gold-400"></i> Akses PhotoBooth?
+          </label>
+          <div class="grid grid-cols-2 gap-4">
+            <label class="cursor-pointer group">
+              <input type="radio" name="entry.1975250981" value="Ya" id="pbYa" class="sr-only peer">
+              <div class="p-4 text-center rounded-xl border-2 transition-all border-gold-400/20 bg-white/[0.02]
+                          hover:border-gold-400/50 hover:bg-white/[0.04]
+                          peer-checked:border-gold-400 peer-checked:bg-gold-400/10">
+                <i class="block mb-1 text-xl fa-solid fa-camera-retro text-emerald-200/50 group-has-[:checked]:text-gold-400"></i>
+                <span class="block text-base font-bold text-emerald-100/70 peer-checked:text-gold-300">Ya</span>
               </div>
             </label>
-            <label class="cursor-pointer">
-              <input type="radio" name="photobooth" value="Tidak" required class="peer sr-only">
-              <div class="rounded-xl border-2 border-green-900/15 bg-white/80
-                          px-4 py-3 text-center font-medium text-green-950
-                          peer-checked:border-gold-500 peer-checked:bg-gold-400/90
-                          peer-checked:shadow-md transition-all">
-                Tidak
+            <label class="cursor-pointer group">
+              <input type="radio" name="entry.1975250981" value="Tidak" id="pbTidak" class="sr-only peer">
+              <div class="p-4 text-center rounded-xl border-2 transition-all border-gold-400/20 bg-white/[0.02]
+                          hover:border-gold-400/50 hover:bg-white/[0.04]
+                          peer-checked:border-gold-400 peer-checked:bg-gold-400/10">
+                <i class="block mb-1 text-xl fa-solid fa-ban text-emerald-200/50 group-has-[:checked]:text-gold-400"></i>
+                <span class="block text-base font-bold text-emerald-100/70 peer-checked:text-gold-300">Tidak</span>
               </div>
             </label>
           </div>
+          <p class="mt-1.5 text-xs text-red-400 hidden err-msg">Akses PhotoBooth wajib dipilih.</p>
         </div>
 
-        <button type="submit" id="btn-submit"
-                class="w-full mt-2 rounded-xl py-3 font-display font-semibold text-green-950
-                       bg-gold-400 hover:bg-gold-500 active:scale-[0.98]
-                       transition-all duration-200 shadow-lg shadow-gold-500/20
-                       disabled:opacity-70 disabled:cursor-not-allowed">
-          Kirim Reservasi
-        </button>
+        <!-- Submit Button -->
+        <div class="pt-4" data-aos="fade-up" data-aos-delay="250">
+          <button type="submit" id="btnSubmit"
+            class="flex gap-2 justify-center items-center px-6 py-4 w-full font-bold uppercase tracking-wide rounded-lg shadow-lg transition-all font-display text-forest-950 bg-gradient-to-r from-gold-400 to-gold-500 hover:from-gold-300 hover:to-gold-400 shadow-gold-500/20 active:scale-[.98]">
+            <i id="submitIcon" class="fa-solid fa-paper-plane"></i>
+            <span id="submitLabel">Kirim Reservasi</span>
+            <i id="submitSpinner" class="hidden fa-solid fa-circle-notch fa-spin"></i>
+          </button>
+        </div>
       </form>
     </div>
+
+    <p class="text-[11px] text-emerald-200/40 text-center mt-5">
+      &copy; <span id="year"></span> Reservasi Expo. All Right Reserved.
+    </p>
   </main>
 
-  <!-- ===================== FORM BAYANGAN (MIRROR) + IFRAME TERSEMBUNYI ===================== -->
-  <!-- Teknik ini mengirim data ke Google Form tanpa terkena CORS, karena target-nya iframe, bukan AJAX. -->
-  <!-- PENTING: ganti action URL & nama entry.xxxxx di bawah ini dengan Form ID dan entry ID Google Form Anda sendiri
-       (ambil dari URL "formResponse" pada mode pratinjau HTML Google Form Anda). -->
-  <iframe name="hidden_iframe" id="hidden_iframe" class="visually-hidden"></iframe>
-  <form id="gformMirror"
-        action="https://docs.google.com/forms/d/e/1FAIpQLScazZ_QXUmFgb3Yr_4LOd_gkIN1yj3gNOHpmq_AaxIIZ7zyeQ/formResponse"
-        method="POST"
-        target="hidden_iframe"
-        class="visually-hidden">
-    <input type="text" name="entry.11111" id="mirror-nama">
-    <input type="text" name="entry.22222" id="mirror-kelas">
-    <input type="text" name="entry.33333" id="mirror-photobooth">
+  <!-- Bottom wave decoration -->
+  <div class="overflow-hidden fixed inset-x-0 bottom-0 h-40 pointer-events-none -z-10 opacity-70">
+    <svg viewBox="0 0 1440 200" class="w-full h-full" preserveAspectRatio="none">
+      <path d="M0,120 C240,40 480,200 720,140 C960,80 1200,160 1440,110 L1440,200 L0,200 Z" fill="#fbd94a" opacity="0.12"></path>
+    </svg>
+  </div>
+
+  <!--
+    Hidden iframe + mirror form untuk kirim data secara diam-diam ke Google Form
+    (menghindari error CORS karena Google Forms tidak mengizinkan fetch/XHR langsung).
+
+    Ganti "action" di bawah dengan link formResponse Google Form kamu jika berbeda,
+    dan sesuaikan setiap "name" (entry.xxxxxxx) dengan entry ID milikmu jika kamu
+    mengganti field pada Google Form aslinya.
+  -->
+  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+  <form id="gformMirror" method="POST" target="hidden_iframe"
+        action="https://docs.google.com/forms/d/e/1FAIpQLSeB0mbaKcKf3V_aLdfmZx5QlsOpla5hl9FlQf-S5D6E-PZJaA/formResponse"
+        style="display:none;">
+    <input type="text" name="entry.1491829252" id="m_nama">
+    <input type="text" name="entry.1624798674" id="m_kelas">
+    <input type="text" name="entry.1975250981" id="m_photobooth">
   </form>
 
-  <script>
-    $(function () {
+  <!-- jQuery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <!-- AOS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-      // ===================== SUBMIT FORM UTAMA =====================
-      $('#form-reservasi').on('submit', function (e) {
+  <script>
+    AOS.init({ duration: 550, easing: 'ease-out-cubic', once: true, offset: 30 });
+
+    $(document).ready(function () {
+      $('#year').text(new Date().getFullYear());
+
+      /* ---------- Validasi ---------- */
+      function validate() {
+        var ok = true;
+        var errors = [];
+
+        // Nama
+        var $nama = $('#nama');
+        if ($.trim($nama.val()) === '') {
+          $nama.addClass('field-error'); $nama.siblings('.err-msg').removeClass('hidden');
+          errors.push('Nama Siswa'); ok = false;
+        } else {
+          $nama.removeClass('field-error'); $nama.siblings('.err-msg').addClass('hidden');
+        }
+
+        // Kelas
+        var $kelas = $('#kelas');
+        if ($.trim($kelas.val()) === '') {
+          $kelas.addClass('field-error'); $kelas.siblings('.err-msg').removeClass('hidden');
+          errors.push('Kelas'); ok = false;
+        } else {
+          $kelas.removeClass('field-error'); $kelas.siblings('.err-msg').addClass('hidden');
+        }
+
+        // Akses PhotoBooth
+        var pbChecked = $('input[name="entry.1975250981"]:checked').length > 0;
+        var $pbErr = $('input[name="entry.1975250981"]').closest('div').siblings('.err-msg');
+        if (!pbChecked) {
+          $pbErr.removeClass('hidden');
+          errors.push('Akses PhotoBooth'); ok = false;
+        } else {
+          $pbErr.addClass('hidden');
+        }
+
+        if (!ok) {
+          Swal.fire({
+            icon: 'warning',
+            title: 'Data belum lengkap',
+            html: 'Mohon lengkapi field berikut:<br><b>' + errors.join(', ') + '</b>',
+            confirmButtonColor: '#f4c410',
+            background: '#0a3b2b',
+            color: '#f3fbf6'
+          });
+        }
+
+        return ok;
+      }
+
+      /* ---------- Submit ---------- */
+      $('#reservasiForm').on('submit', function (e) {
         e.preventDefault();
 
-        var nama       = $('#nama').val().trim();
-        var kelas      = $('#kelas').val();
-        var photobooth = $('input[name="photobooth"]:checked').val();
+        if (!validate()) return;
 
-        // Ikon ceklis kustom: lingkaran border kuning tebal + tanda ceklis kuning
-        var checkIcon =
-          '<svg width="76" height="76" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">' +
-            '<circle cx="40" cy="40" r="35" stroke="#F7CB3D" stroke-width="6"/>' +
-            '<path d="M24 41L35 52L57 29" stroke="#F7CB3D" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>' +
-          '</svg>';
+        var $btn = $('#btnSubmit');
+        $btn.prop('disabled', true).addClass('opacity-70 cursor-not-allowed');
+        $('#submitLabel').text('Mengirim...');
+        $('#submitIcon').addClass('hidden');
+        $('#submitSpinner').removeClass('hidden');
 
-        // ===================== POPUP SUKSES (SweetAlert2, desain kustom) =====================
-        Swal.fire({
-          html:
-            '<div class="flex flex-col items-center px-1">' +
-              '<div class="mb-4">' + checkIcon + '</div>' +
-              '<h2 class="font-display text-xl font-bold text-green-900 mb-2">Reservasi Terkirim</h2>' +
-              '<p class="text-sm text-gray-600 leading-relaxed">' +
-                'Data atas nama <b>' + nama + '</b> (' + kelas + ') sudah tersimpan.<br>' +
-                'PhotoBooth: <b>' + photobooth + '</b>' +
-              '</p>' +
-            '</div>',
-          showCancelButton: true,
-          confirmButtonText: 'Lanjutkan ke Google Form',
-          cancelButtonText: 'Tutup',
-          reverseButtons: false,
-          buttonsStyling: false,
-          customClass: {
-            popup: 'rounded-3xl',
-            actions: 'flex flex-col sm:flex-row-reverse gap-2 w-full px-4 pb-2',
-            confirmButton: 'w-full bg-gold-400 hover:bg-gold-500 text-green-950 font-display font-semibold rounded-xl px-5 py-2.5 transition-colors',
-            cancelButton: 'w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-xl px-5 py-2.5 transition-colors'
-          }
-        }).then(function (result) {
-          if (result.isConfirmed) {
+        var pbValue = $('input[name="entry.1975250981"]:checked').val();
 
-            // 1. Salin data form utama ke form bayangan (gformMirror)
-            $('#mirror-nama').val(nama);
-            $('#mirror-kelas').val(kelas);
-            $('#mirror-photobooth').val(photobooth);
+        // isi form tersembunyi lalu kirim lewat iframe (aman dari CORS)
+        $('#m_nama').val($('#nama').val());
+        $('#m_kelas').val($('#kelas').val());
+        $('#m_photobooth').val(pbValue);
 
-            // 2. Submit form bayangan ke iframe tersembunyi (menghindari CORS)
-            $('#gformMirror')[0].submit();
+        document.getElementById('gformMirror').submit();
 
-            // 3. Reset form utama
-            $('#form-reservasi')[0].reset();
+        setTimeout(function () {
+          $btn.prop('disabled', false).removeClass('opacity-70 cursor-not-allowed');
+          $('#submitLabel').text('Kirim Reservasi');
+          $('#submitIcon').removeClass('hidden');
+          $('#submitSpinner').addClass('hidden');
 
-            // 4. Notifikasi sukses ringkas (toast)
-            Swal.fire({
-              toast: true,
-              position: 'top-end',
-              icon: 'success',
-              title: 'Berhasil dikirim',
-              showConfirmButton: false,
-              timer: 2500,
-              timerProgressBar: true
-            });
-          }
-        });
+          Swal.fire({
+            icon: 'success',
+            title: 'Reservasi Terkirim!',
+            text: 'Terima kasih, data reservasi kamu sudah kami terima.',
+            confirmButtonColor: '#f4c410',
+            background: '#0a3b2b',
+            color: '#f3fbf6'
+          });
+
+          document.getElementById('reservasiForm').reset();
+        }, 1300);
       });
-
     });
   </script>
-
 </body>
+
 </html>
