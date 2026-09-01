@@ -142,40 +142,88 @@
 
         <div>
           <label for="nama" class="block text-sm font-medium text-green-950 mb-1">Nama Lengkap</label>
-          <input type="text" id="nama" name="nama" required placeholder="Tulis nama lengkapmu"
+          <input type="text" id="nama" name="nama" required placeholder="Contoh: Febri Pratama"
                  class="w-full rounded-xl px-4 py-2.5 bg-white/80 border border-green-900/10
                         text-green-950 placeholder:text-green-900/40
                         focus:outline-none focus:ring-2 focus:ring-gold-500">
         </div>
 
         <div>
-          <label for="instansi" class="block text-sm font-medium text-green-950 mb-1">Asal Instansi / Kelas</label>
-          <input type="text" id="instansi" name="instansi" required placeholder="Contoh: SMK Negeri 1 - 12 RPL 1"
-                 class="w-full rounded-xl px-4 py-2.5 bg-white/80 border border-green-900/10
-                        text-green-950 placeholder:text-green-900/40
-                        focus:outline-none focus:ring-2 focus:ring-gold-500">
-        </div>
-
-        <div>
-          <label for="kategori" class="block text-sm font-medium text-green-950 mb-1">Kategori Tiket</label>
-          <select id="kategori" name="kategori" required
+          <label for="kelas" class="block text-sm font-medium text-green-950 mb-1">Kelas</label>
+          <select id="kelas" name="kelas" required
                   class="custom-select w-full rounded-xl px-4 py-2.5 bg-white/80 border border-green-900/10
                          text-green-950 focus:outline-none focus:ring-2 focus:ring-gold-500">
-            <option value="" disabled selected>Pilih kategori</option>
-            <option value="Pelajar">Pelajar</option>
-            <option value="Umum">Umum</option>
+            <option value="" disabled selected>Pilih kelas</option>
+            <optgroup label="Kelas 10">
+              <option value="10 RPL 1">10 RPL 1</option>
+              <option value="10 RPL 2">10 RPL 2</option>
+              <option value="10 RPL 3">10 RPL 3</option>
+              <option value="10 RPL 4">10 RPL 4</option>
+              <option value="10 RPL 5">10 RPL 5</option>
+              <option value="10 RPL 6">10 RPL 6</option>
+              <option value="10 RPL 7">10 RPL 7</option>
+              <option value="10 RPL 8">10 RPL 8</option>
+              <option value="10 RPL 9">10 RPL 9</option>
+              <option value="10 RPL 10">10 RPL 10</option>
+              <option value="10 RPL 11">10 RPL 11</option>
+              <option value="10 DKV 1">10 DKV 1</option>
+              <option value="10 DKV 2">10 DKV 2</option>
+              <option value="10 DKV 3">10 DKV 3</option>
+            </optgroup>
+            <optgroup label="Kelas 11">
+              <option value="11 RPL 1">11 RPL 1</option>
+              <option value="11 RPL 2">11 RPL 2</option>
+              <option value="11 RPL 3">11 RPL 3</option>
+              <option value="11 RPL 4">11 RPL 4</option>
+              <option value="11 RPL 5">11 RPL 5</option>
+              <option value="11 RPL 6">11 RPL 6</option>
+              <option value="11 RPL 7">11 RPL 7</option>
+              <option value="11 RPL 8">11 RPL 8</option>
+              <option value="11 RPL 9">11 RPL 9</option>
+              <option value="11 DKV 1">11 DKV 1</option>
+              <option value="11 DKV 2">11 DKV 2</option>
+              <option value="11 DKV 3">11 DKV 3</option>
+            </optgroup>
+            <optgroup label="Kelas 12">
+              <option value="12 RPL 1">12 RPL 1</option>
+              <option value="12 RPL 2">12 RPL 2</option>
+              <option value="12 RPL 3">12 RPL 3</option>
+              <option value="12 RPL 4">12 RPL 4</option>
+              <option value="12 RPL 5">12 RPL 5</option>
+              <option value="12 RPL 6">12 RPL 6</option>
+              <option value="12 RPL 7">12 RPL 7</option>
+              <option value="12 RPL 8">12 RPL 8</option>
+              <option value="12 RPL 9">12 RPL 9</option>
+              <option value="12 DKV 1">12 DKV 1</option>
+              <option value="12 DKV 2">12 DKV 2</option>
+              <option value="12 DKV 3">12 DKV 3</option>
+            </optgroup>
           </select>
         </div>
 
         <div>
-          <label for="photobooth" class="block text-sm font-medium text-green-950 mb-1">Akses PhotoBooth?</label>
-          <select id="photobooth" name="photobooth" required
-                  class="custom-select w-full rounded-xl px-4 py-2.5 bg-white/80 border border-green-900/10
-                         text-green-950 focus:outline-none focus:ring-2 focus:ring-gold-500">
-            <option value="" disabled selected>Pilih salah satu</option>
-            <option value="Iya">Iya</option>
-            <option value="Tidak">Tidak</option>
-          </select>
+          <span class="block text-sm font-medium text-green-950 mb-1">Akses PhotoBooth?</span>
+          <p class="text-xs text-green-900/60 mb-2">Pilih salah satu di bawah ini</p>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="cursor-pointer">
+              <input type="radio" name="photobooth" value="Iya" required class="peer sr-only">
+              <div class="rounded-xl border-2 border-green-900/15 bg-white/80
+                          px-4 py-3 text-center font-medium text-green-950
+                          peer-checked:border-gold-500 peer-checked:bg-gold-400/90
+                          peer-checked:shadow-md transition-all">
+                Iya
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="photobooth" value="Tidak" required class="peer sr-only">
+              <div class="rounded-xl border-2 border-green-900/15 bg-white/80
+                          px-4 py-3 text-center font-medium text-green-950
+                          peer-checked:border-gold-500 peer-checked:bg-gold-400/90
+                          peer-checked:shadow-md transition-all">
+                Tidak
+              </div>
+            </label>
+          </div>
         </div>
 
         <button type="submit" id="btn-submit"
@@ -200,9 +248,8 @@
         target="hidden_iframe"
         class="visually-hidden">
     <input type="text" name="entry.11111" id="mirror-nama">
-    <input type="text" name="entry.22222" id="mirror-instansi">
-    <input type="text" name="entry.33333" id="mirror-kategori">
-    <input type="text" name="entry.44444" id="mirror-photobooth">
+    <input type="text" name="entry.22222" id="mirror-kelas">
+    <input type="text" name="entry.33333" id="mirror-photobooth">
   </form>
 
   <script>
@@ -213,9 +260,8 @@
         e.preventDefault();
 
         var nama       = $('#nama').val().trim();
-        var instansi   = $('#instansi').val().trim();
-        var kategori   = $('#kategori').val();
-        var photobooth = $('#photobooth').val();
+        var kelas      = $('#kelas').val();
+        var photobooth = $('input[name="photobooth"]:checked').val();
 
         // Ikon ceklis kustom: lingkaran border kuning tebal + tanda ceklis kuning
         var checkIcon =
@@ -231,7 +277,7 @@
               '<div class="mb-4">' + checkIcon + '</div>' +
               '<h2 class="font-display text-xl font-bold text-green-900 mb-2">Reservasi Terkirim</h2>' +
               '<p class="text-sm text-gray-600 leading-relaxed">' +
-                'Data atas nama <b>' + nama + '</b> (' + instansi + ') sudah tersimpan.<br>' +
+                'Data atas nama <b>' + nama + '</b> (' + kelas + ') sudah tersimpan.<br>' +
                 'PhotoBooth: <b>' + photobooth + '</b>' +
               '</p>' +
             '</div>',
@@ -251,8 +297,7 @@
 
             // 1. Salin data form utama ke form bayangan (gformMirror)
             $('#mirror-nama').val(nama);
-            $('#mirror-instansi').val(instansi);
-            $('#mirror-kategori').val(kategori);
+            $('#mirror-kelas').val(kelas);
             $('#mirror-photobooth').val(photobooth);
 
             // 2. Submit form bayangan ke iframe tersembunyi (menghindari CORS)
@@ -261,12 +306,12 @@
             // 3. Reset form utama
             $('#form-reservasi')[0].reset();
 
-            // 4. Notifikasi sukses kecil (toast)
+            // 4. Notifikasi sukses ringkas (toast)
             Swal.fire({
               toast: true,
               position: 'top-end',
               icon: 'success',
-              title: 'Data berhasil dikirim ke Google Form',
+              title: 'Berhasil dikirim',
               showConfirmButton: false,
               timer: 2500,
               timerProgressBar: true
