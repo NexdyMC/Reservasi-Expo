@@ -152,39 +152,81 @@
         </div>
 
         <div>
-          <label for="instansi" class="block text-sm font-medium text-green-950 dark:text-gold-200 mb-1 theme-fade">Asal Instansi / Sekolah</label>
-          <input type="text" id="instansi" name="instansi" required placeholder="Contoh: SMA Negeri 1 Bandung"
-                 class="w-full rounded-xl px-4 py-2.5 bg-white/80 dark:bg-white/10 border border-green-900/10 dark:border-white/10
-                        text-green-950 dark:text-white placeholder:text-green-900/40 dark:placeholder:text-white/40
-                        focus:outline-none focus:ring-2 focus:ring-gold-500 theme-fade">
-        </div>
-
-        <div>
-          <label for="email" class="block text-sm font-medium text-green-950 dark:text-gold-200 mb-1 theme-fade">Email</label>
-          <input type="email" id="email" name="email" required placeholder="nama@email.com"
-                 class="w-full rounded-xl px-4 py-2.5 bg-white/80 dark:bg-white/10 border border-green-900/10 dark:border-white/10
-                        text-green-950 dark:text-white placeholder:text-green-900/40 dark:placeholder:text-white/40
-                        focus:outline-none focus:ring-2 focus:ring-gold-500 theme-fade">
-        </div>
-
-        <div>
-          <label for="whatsapp" class="block text-sm font-medium text-green-950 dark:text-gold-200 mb-1 theme-fade">No. WhatsApp</label>
-          <input type="tel" id="whatsapp" name="whatsapp" required placeholder="08xxxxxxxxxx"
-                 class="w-full rounded-xl px-4 py-2.5 bg-white/80 dark:bg-white/10 border border-green-900/10 dark:border-white/10
-                        text-green-950 dark:text-white placeholder:text-green-900/40 dark:placeholder:text-white/40
-                        focus:outline-none focus:ring-2 focus:ring-gold-500 theme-fade">
-        </div>
-
-        <div>
-          <label for="kategori" class="block text-sm font-medium text-green-950 dark:text-gold-200 mb-1 theme-fade">Kategori Tiket</label>
-          <select id="kategori" name="kategori" required
+          <label for="kelas" class="block text-sm font-medium text-green-950 dark:text-gold-200 mb-1 theme-fade">Kelas</label>
+          <select id="kelas" name="kelas" required
                   class="custom-select w-full rounded-xl px-4 py-2.5 bg-white/80 dark:bg-white/10 border border-green-900/10 dark:border-white/10
                          text-green-950 dark:text-white focus:outline-none focus:ring-2 focus:ring-gold-500 theme-fade">
-            <option value="" disabled selected>Pilih kategori</option>
-            <option value="Pelajar">Pelajar</option>
-            <option value="Umum">Umum</option>
-            <option value="VIP">VIP</option>
+            <option value="" disabled selected>Pilih kelas</option>
+            <optgroup label="Kelas 10">
+              <option value="10 RPL 1">10 RPL 1</option>
+              <option value="10 RPL 2">10 RPL 2</option>
+              <option value="10 RPL 3">10 RPL 3</option>
+              <option value="10 RPL 4">10 RPL 4</option>
+              <option value="10 RPL 5">10 RPL 5</option>
+              <option value="10 RPL 6">10 RPL 6</option>
+              <option value="10 RPL 7">10 RPL 7</option>
+              <option value="10 RPL 8">10 RPL 8</option>
+              <option value="10 RPL 9">10 RPL 9</option>
+              <option value="10 RPL 10">10 RPL 10</option>
+              <option value="10 RPL 11">10 RPL 11</option>
+              <option value="10 DKV 1">10 DKV 1</option>
+              <option value="10 DKV 2">10 DKV 2</option>
+              <option value="10 DKV 3">10 DKV 3</option>
+            </optgroup>
+            <optgroup label="Kelas 11">
+              <option value="11 RPL 1">11 RPL 1</option>
+              <option value="11 RPL 2">11 RPL 2</option>
+              <option value="11 RPL 3">11 RPL 3</option>
+              <option value="11 RPL 4">11 RPL 4</option>
+              <option value="11 RPL 5">11 RPL 5</option>
+              <option value="11 RPL 6">11 RPL 6</option>
+              <option value="11 RPL 7">11 RPL 7</option>
+              <option value="11 RPL 8">11 RPL 8</option>
+              <option value="11 RPL 9">11 RPL 9</option>
+              <option value="11 DKV 1">11 DKV 1</option>
+              <option value="11 DKV 2">11 DKV 2</option>
+              <option value="11 DKV 3">11 DKV 3</option>
+            </optgroup>
+            <optgroup label="Kelas 12">
+              <option value="12 RPL 1">12 RPL 1</option>
+              <option value="12 RPL 2">12 RPL 2</option>
+              <option value="12 RPL 3">12 RPL 3</option>
+              <option value="12 RPL 4">12 RPL 4</option>
+              <option value="12 RPL 5">12 RPL 5</option>
+              <option value="12 RPL 6">12 RPL 6</option>
+              <option value="12 RPL 7">12 RPL 7</option>
+              <option value="12 RPL 8">12 RPL 8</option>
+              <option value="12 RPL 9">12 RPL 9</option>
+              <option value="12 DKV 1">12 DKV 1</option>
+              <option value="12 DKV 2">12 DKV 2</option>
+              <option value="12 DKV 3">12 DKV 3</option>
+            </optgroup>
           </select>
+        </div>
+
+        <div>
+          <span class="block text-sm font-medium text-green-950 dark:text-gold-200 mb-1 theme-fade">PhotoBooth</span>
+          <p class="text-xs text-green-900/60 dark:text-white/50 mb-2 theme-fade">Apakah kamu ingin menggunakan PhotoBooth?</p>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="cursor-pointer">
+              <input type="radio" name="photobooth" value="iya" required class="peer sr-only">
+              <div class="rounded-xl border-2 border-green-900/10 dark:border-white/10 bg-white/80 dark:bg-white/10
+                          px-4 py-3 text-center font-medium text-green-950 dark:text-white theme-fade
+                          peer-checked:border-gold-500 peer-checked:bg-gold-400/90 peer-checked:text-green-950
+                          peer-checked:shadow-md transition-all">
+                Iya
+              </div>
+            </label>
+            <label class="cursor-pointer">
+              <input type="radio" name="photobooth" value="tidak" required class="peer sr-only">
+              <div class="rounded-xl border-2 border-green-900/10 dark:border-white/10 bg-white/80 dark:bg-white/10
+                          px-4 py-3 text-center font-medium text-green-950 dark:text-white theme-fade
+                          peer-checked:border-gold-500 peer-checked:bg-gold-400/90 peer-checked:text-green-950
+                          peer-checked:shadow-md transition-all">
+                Tidak
+              </div>
+            </label>
+          </div>
         </div>
 
         <button type="submit" id="btn-submit"
@@ -196,7 +238,7 @@
         </button>
 
         <p id="form-note" class="text-xs text-center text-green-900/70 dark:text-white/50 pt-1 theme-fade">
-          Data akan diteruskan ke panitia expo.
+          Data akan diteruskan ke panitia expo untuk konfirmasi kehadiran.
         </p>
       </form>
     </div>
@@ -224,20 +266,22 @@
         $note.text('Sedang mengirim data reservasi...');
 
         setTimeout(function () {
-          var nama     = $('#nama').val();
-          var instansi = $('#instansi').val();
+          var nama       = $('#nama').val();
+          var kelas      = $('#kelas').val();
+          var photobooth = $('input[name="photobooth"]:checked').val();
 
-          // Bangun URL Google Form ter-prefill (hanya field yang ID entry-nya diketahui)
+          // Bangun URL Google Form ter-prefill (ketiga entry ID sudah sesuai field form ini)
           var baseUrl = 'https://docs.google.com/forms/d/e/1FAIpQLScazZ_QXUmFgb3Yr_4LOd_gkIN1yj3gNOHpmq_AaxIIZ7zyeQ/viewform';
           var googleFormUrl = baseUrl
             + '?usp=pp_url'
             + '&entry.962445220=' + encodeURIComponent(nama)
-            + '&entry.1759023125=' + encodeURIComponent(instansi);
+            + '&entry.1759023125=' + encodeURIComponent(kelas)
+            + '&entry.1507860343=' + encodeURIComponent(photobooth);
 
           alert('Reservasi atas nama "' + nama + '" berhasil diajukan! Anda akan diarahkan untuk menyelesaikan pendaftaran resmi di Google Form.');
 
           $btn.prop('disabled', false).text(originalText);
-          $note.text('Data akan diteruskan ke panitia expo.');
+          $note.text('Data akan diteruskan ke panitia expo untuk konfirmasi kehadiran.');
 
           // Buka Google Form ter-prefill di tab baru untuk penyelesaian resmi
           window.open(googleFormUrl, '_blank');
